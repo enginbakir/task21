@@ -14,6 +14,7 @@ class Task extends Model
     const DONE = 3;
 
     public $assignedUser;
+    public $testVal = "test val";
     protected $fillable = ['title', 'description', 'status', 'user_id'];
 
     public function __construct(array $attributes = [])
@@ -22,9 +23,14 @@ class Task extends Model
         parent::__construct($attributes);
     }
 
+    public function testVal(){
+        return $this->testVal;
+    }
+
     public function assignedUser()
     {
-        return $this->belongsTo(User::class);
+        echo "assignedUser method";
+        //return $this->belongsTo(User::class);
     }
 
     public function sortByStatus()

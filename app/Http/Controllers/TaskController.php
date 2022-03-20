@@ -16,17 +16,16 @@ class TaskController
 
     public function getOne(Request $request, $id)
     {
-        $user = User::factory()->create();
-
-        print_r($user->id);
+//        $user = User::factory()->create();
+//        print_r($user->id);
 //        print_r($user);
-        echo "<br>----------------<br>";
-
-        $user = User::find(222);
-        print_r($user->id);
+//        echo "<br>----------------<br>";
 
         $task = Task::factory()->create();
-        $task
+        echo "testval : ".$task->testVal();
+
+        echo "<br>assignedUser<br>";
+        var_dump($task->assingedUser());
 
         exit;
 
