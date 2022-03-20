@@ -30,13 +30,18 @@ class TaskController
     {
         $request->validate(['title' => ["required"]]);
         $data = [
-            "title" => $request->title,
+            "titlea" => $request->title,
             "description" => $request->description,
             "status" => $request->status,
             "user_id" => $request->user_id
         ];
 
-        Task::create($data);
+        $result = Task::create($data);
+        echo "create";
+        var_dump($result);
+
+        exit;
+
         return new JsonResponse(["data" => $data], self::HTPP_CREATED);
     }
 
