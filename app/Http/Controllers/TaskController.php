@@ -42,24 +42,28 @@ class TaskController
     {
         $request->validate(['title' => ["required"]]);
         $data = [
-            "titlae" => $request->title,
+            "title" => $request->title,
             "description" => $request->description,
             "status" => $request->status,
             "user_id" => $request->user_id
         ];
 
         $result = Task::create($data);
-        if(!$result){
-            throw new \PDOException("Task not saved");
-        }
         return new JsonResponse(["data" => $data], $result ? self::HTPP_CREATED : self::HTTP_INTERNAL_SERVER_ERROR);
     }
 
     public function remove(Request $request, $id)
     {
         $task = Task::find($id);
-        $result = $task ? $task->delete() : false;
-        return new JsonResponse(["data" => $task], $result ? self::HTPP_OK : self::HTTP_INTERNAL_SERVER_ERROR);
+        if (!$task) {
+            throw new ModelNotFoundException("No record found");
+        }
+        $result = $task->delete();
+        if(!$result){
+            throw new \PDOException("Record could not be removed");
+        }
+
+        return new JsonResponse(["data" => $task], $task->delete()  ? self::HTPP_OK : self::HTTP_INTERNAL_SERVER_ERROR);
     }
 
     public function update(Request $request, $id)
