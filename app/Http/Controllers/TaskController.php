@@ -13,10 +13,12 @@ class TaskController
     const HTPP_CREATED = 201;
     const HTTP_INTERNAL_SERVER_ERROR = 500;
 
-    public function getOne()
+    public function getOne(Request $request, $id)
     {
-        echo "hello getOne";
+        $task = Task::find($id);
+        var_dump($task);
         exit;
+        return new JsonResponse(["data" => $task], $task ? self::HTPP_OK : self::HTTP_NOT_FOUND);
     }
 
     public function getAll()
