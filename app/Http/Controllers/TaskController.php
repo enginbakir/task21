@@ -16,24 +16,7 @@ class TaskController
 
     public function getOne(Request $request, $id)
     {
-//        $user = User::factory()->create();
-//        print_r($user->id);
-//        print_r($user);
-//        echo "<br>----------------<br>";
-
-        $task = Task::factory()->create();
-        echo "testval : ".$task->testVal();
-
-        echo "<br>assignedUser<br>";
-        var_dump($task->assingedUser);
-
-        exit;
-
         $task = Task::find($id);
-
-        print_r($task);
-        exit;
-
         return new JsonResponse(["data" => $task], $task ? self::HTPP_OK : self::HTTP_NOT_FOUND);
     }
 
@@ -57,15 +40,28 @@ class TaskController
         return new JsonResponse(["data" => $data], self::HTPP_CREATED);
     }
 
-    public function remove()
+    public function remove(Request $request, $id)
     {
-        echo "hello remove";
-        exit;
+        $task = Task::find($id);
+        $result = $task ? $task->delete() : false;
+        return new JsonResponse(["data" => $task], $result ? self::HTPP_OK : self::HTTP_INTERNAL_SERVER_ERROR);
     }
 
-    public function update()
+    public function update(Request $request, $id)
     {
-        echo "hello update";
-        exit;
+        $request->validate(['title' => ["required", "max:255"]]);
+
+        $task = Task::find($id);
+
+        $data = [
+            "title" => $request->title,
+            "description" => $request->description,
+            "status" => $request->status,
+            "user_id" => $request->user_id
+        ];
+
+        $status = $task ? ($task->update($data) ? self::HTPP_OK : self::HTTP_INTERNAL_SERVER_ERROR) : self::HTTP_NOT_FOUND;
+
+        return new JsonResponse(["data" => $task], $status);
     }
 }

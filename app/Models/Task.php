@@ -19,9 +19,10 @@ class Task extends Model
 
     public function __construct(array $attributes = [])
     {
-        $user = User::find($attributes['user_id']);
-        $this->assignedUser = $user ?? null;
-
+        if (!empty($attributes['user_id'])) {
+            $user = User::find($attributes['user_id']);
+            $this->assignedUser = $user ?? null;
+        }
         parent::__construct($attributes);
     }
 
@@ -33,10 +34,11 @@ class Task extends Model
     public function sortByStatus()
     {
         $tasks = Task::all();
-        $taskSorted = $collection->sortBy([
-            ['name', 'asc'],
-            ['age', 'desc'],
+        $taskSorted = $tasks->sortBy([
+            ['status', 'asc'],
+            ['title', 'asc'],
         ]);
 
+        return $taskSorted;
     }
 }
