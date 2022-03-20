@@ -2,9 +2,12 @@
 
 namespace App\Exceptions;
 
+use Illuminate\Database\Eloquent\ModelNotFoundException;
 use Illuminate\Database\QueryException;
 use Illuminate\Foundation\Exceptions\Handler as ExceptionHandler;
 use Illuminate\Http\JsonResponse;
+use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
+use Symfony\Component\Translation\Exception\NotFoundResourceException;
 use Throwable;
 
 class Handler extends ExceptionHandler
@@ -36,8 +39,15 @@ class Handler extends ExceptionHandler
     public function register()
     {
         $this->renderable(function (Throwable $e) {
+
+            if ($e instanceof ModelNotFoundException or $e instanceof NotFoundHttpException) {
+                $status = 404;
+            } else {
+                $status = 500;
+            }
+
             $error = ["error" => $e->getMessage()];
-            return new JsonResponse($error, 500);
+            return new JsonResponse($error, $status);
         });
 
         $this->reportable(function (Throwable $e) {

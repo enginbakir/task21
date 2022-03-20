@@ -4,8 +4,13 @@ namespace App\Http\Controllers;
 
 use App\Models\Task;
 use App\Models\User;
+use Facade\FlareClient\Http\Exceptions\NotFound;
+use Illuminate\Database\Eloquent\ModelNotFoundException;
+use Illuminate\Database\RecordsNotFoundException;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
+use phpseclib3\Exception\FileNotFoundException;
+use Symfony\Component\Translation\Exception\NotFoundResourceException;
 
 class TaskController
 {
@@ -17,27 +22,36 @@ class TaskController
     public function getOne(Request $request, $id)
     {
         $task = Task::find($id);
-        if(!tasks)
-        return new JsonResponse(["data" => $task], $task ? self::HTPP_OK : self::HTTP_NOT_FOUND);
+        if (!$task) {
+            throw new ModelNotFoundException("Task not found");
+        }
+        return new JsonResponse(["data" => $task], self::HTPP_OK);
     }
 
     public function getAll()
     {
         $tasks = Task::all();
-        return new JsonResponse(["data" => $tasks], $tasks ? self::HTPP_OK : self::HTTP_NOT_FOUND);
+
+        if (count($tasks) === 0) {
+            throw new ModelNotFoundException("No task found");
+        }
+        return new JsonResponse(["data" => $tasks], self::HTPP_OK);
     }
 
     public function create(Request $request): JsonResponse
     {
         $request->validate(['title' => ["required"]]);
         $data = [
-            "title" => $request->title,
+            "titlae" => $request->title,
             "description" => $request->description,
             "status" => $request->status,
             "user_id" => $request->user_id
         ];
 
         $result = Task::create($data);
+        if(!$result){
+            throw new \PDOException("Task not saved");
+        }
         return new JsonResponse(["data" => $data], $result ? self::HTPP_CREATED : self::HTTP_INTERNAL_SERVER_ERROR);
     }
 
@@ -52,6 +66,9 @@ class TaskController
     {
         $request->validate(['title' => ["required", "max:255"]]);
         $task = Task::find($id);
+        if (!$task) {
+            throw new ModelNotFoundException("No record found");
+        }
         $data = [
             "title" => $request->title,
             "description" => $request->description,
@@ -59,7 +76,7 @@ class TaskController
             "user_id" => $request->user_id
         ];
 
-        $status = $task ? ($task->update($data) ? self::HTPP_OK : self::HTTP_INTERNAL_SERVER_ERROR) : self::HTTP_NOT_FOUND;
+        $status = ($task->update($data) ? self::HTPP_OK : self::HTTP_INTERNAL_SERVER_ERROR);
         return new JsonResponse(["data" => $task], $status);
     }
 }
