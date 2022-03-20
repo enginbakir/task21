@@ -13,10 +13,12 @@ class Task extends Model
     const TODO = 2;
     const DONE = 3;
 
+    public $assignedUser;
+
     protected $fillable = ['title', 'description', 'status', 'user_id'];
 
     public function assignedUser()
     {
-        return $this->hasMany(User::class);
+        return $this->belongsTo(User::class);
     }
 }
