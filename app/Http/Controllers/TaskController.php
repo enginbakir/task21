@@ -25,7 +25,7 @@ class TaskController
         echo "testval : ".$task->testVal();
 
         echo "<br>assignedUser<br>";
-        var_dump($task->assingedUser());
+        var_dump($task->assingedUser);
 
         exit;
 

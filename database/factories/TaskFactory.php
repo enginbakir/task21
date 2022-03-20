@@ -13,7 +13,7 @@ class TaskFactory extends Factory
             'title' => $this->faker->title,
             'description' => $this->faker->text,
             'status' => $this->faker->numberBetween(1, 3),
-            'user_id' => $this->faker->numberBetween() //User::factory()->create()->id,
+            'user_id' => User::factory()->create()->id // $this->faker->numberBetween(),
         ];
     }
 }

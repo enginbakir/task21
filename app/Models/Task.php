@@ -14,23 +14,26 @@ class Task extends Model
     const DONE = 3;
 
     public $assignedUser;
-    public $testVal = "test val";
+
     protected $fillable = ['title', 'description', 'status', 'user_id'];
 
     public function __construct(array $attributes = [])
     {
-        $this->assignedUser = User::factory()->create();
-        parent::__construct($attributes);
-    }
+        echo "<br>attributes<br><br>";
+        print_r($attributes);
 
-    public function testVal(){
-        return $this->testVal;
+        echo "<br>User<br><br>";
+        print_r(User::find($attributes['user_id']));
+
+        exit;
+//        $this->assignedUser = User::factory()->create();
+        $this->assignedUser = User::find($attributes['user_id']);
+        parent::__construct($attributes);
     }
 
     public function assignedUser()
     {
-        echo "assignedUser method";
-        //return $this->belongsTo(User::class);
+        return $this->belongsTo(User::class);
     }
 
     public function sortByStatus()
