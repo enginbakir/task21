@@ -2,6 +2,7 @@
 
 namespace App\Exceptions;
 
+use Illuminate\Database\QueryException;
 use Illuminate\Foundation\Exceptions\Handler as ExceptionHandler;
 use Illuminate\Http\JsonResponse;
 use Throwable;
@@ -34,10 +35,13 @@ class Handler extends ExceptionHandler
      */
     public function register()
     {
+        $this->renderable(function (Throwable $e) {
+            $error = ["error" => $e->getMessage()];
+            return new JsonResponse($error, 500);
+        });
+
         $this->reportable(function (Throwable $e) {
-            return new JsonResponse
-            echo "file : " . $e->getFile() . " line : " . $e->getLine() . " message : " . $e->getMessage();
-            exit;
+            //
         });
     }
 }

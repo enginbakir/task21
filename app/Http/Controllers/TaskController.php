@@ -17,6 +17,7 @@ class TaskController
     public function getOne(Request $request, $id)
     {
         $task = Task::find($id);
+        if(!tasks)
         return new JsonResponse(["data" => $task], $task ? self::HTPP_OK : self::HTTP_NOT_FOUND);
     }
 
@@ -30,19 +31,14 @@ class TaskController
     {
         $request->validate(['title' => ["required"]]);
         $data = [
-            "titlea" => $request->title,
+            "title" => $request->title,
             "description" => $request->description,
             "status" => $request->status,
             "user_id" => $request->user_id
         ];
 
         $result = Task::create($data);
-        echo "create";
-        var_dump($result);
-
-        exit;
-
-        return new JsonResponse(["data" => $data], self::HTPP_CREATED);
+        return new JsonResponse(["data" => $data], $result ? self::HTPP_CREATED : self::HTTP_INTERNAL_SERVER_ERROR);
     }
 
     public function remove(Request $request, $id)
@@ -55,9 +51,7 @@ class TaskController
     public function update(Request $request, $id)
     {
         $request->validate(['title' => ["required", "max:255"]]);
-
         $task = Task::find($id);
-
         $data = [
             "title" => $request->title,
             "description" => $request->description,
@@ -66,7 +60,6 @@ class TaskController
         ];
 
         $status = $task ? ($task->update($data) ? self::HTPP_OK : self::HTTP_INTERNAL_SERVER_ERROR) : self::HTTP_NOT_FOUND;
-
         return new JsonResponse(["data" => $task], $status);
     }
 }
