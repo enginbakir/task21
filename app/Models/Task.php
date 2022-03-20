@@ -19,15 +19,9 @@ class Task extends Model
 
     public function __construct(array $attributes = [])
     {
-        echo "<br>attributes<br><br>";
-        print_r($attributes);
+        $user = User::find($attributes['user_id']);
+        $this->assignedUser = $user ?? null;
 
-        echo "<br>User<br><br>";
-        print_r(User::find($attributes['user_id']));
-
-        exit;
-//        $this->assignedUser = User::factory()->create();
-        $this->assignedUser = User::find($attributes['user_id']);
         parent::__construct($attributes);
     }
 
@@ -39,5 +33,10 @@ class Task extends Model
     public function sortByStatus()
     {
         $tasks = Task::all();
+        $taskSorted = $collection->sortBy([
+            ['name', 'asc'],
+            ['age', 'desc'],
+        ]);
+
     }
 }
