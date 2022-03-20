@@ -55,14 +55,6 @@ class TaskController
     public function remove(Request $request, $id)
     {
         $task = Task::find($id);
-        if (!$task) {
-            throw new ModelNotFoundException("No record found");
-        }
-        $result = $task->delete();
-        if(!$result){
-            throw new \PDOException("Record could not be removed");
-        }
-
         return new JsonResponse(["data" => $task], $task->delete()  ? self::HTPP_OK : self::HTTP_INTERNAL_SERVER_ERROR);
     }
 

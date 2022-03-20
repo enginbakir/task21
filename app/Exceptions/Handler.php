@@ -38,18 +38,6 @@ class Handler extends ExceptionHandler
      */
     public function register()
     {
-//        $this->renderable(function (Throwable $e) {
-//
-//            if ($e instanceof ModelNotFoundException or $e instanceof NotFoundHttpException) {
-//                $status = 404;
-//            } else {
-//                $status = 500;
-//            }
-//
-//            $error = ["error" => $e->getMessage()];
-//            return new JsonResponse($error, $status);
-//        });
-
         $this->reportable(function (Throwable $e) {
             //
         });
