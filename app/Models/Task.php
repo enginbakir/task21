@@ -29,6 +29,6 @@ class Task extends Model
 
     public function sortByStatus()
     {
-        $task = Task::all();
+        $tasks = Task::all();
     }
 }

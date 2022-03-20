@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\Task;
+use App\Models\User;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 
@@ -15,7 +16,25 @@ class TaskController
 
     public function getOne(Request $request, $id)
     {
+        $user = User::factory()->create();
+
+        print_r($user->id);
+//        print_r($user);
+        echo "<br>----------------<br>";
+
+        $user = User::find(222);
+        print_r($user->id);
+
+        $task = Task::factory()->create();
+        $task
+
+        exit;
+
         $task = Task::find($id);
+
+        print_r($task);
+        exit;
+
         return new JsonResponse(["data" => $task], $task ? self::HTPP_OK : self::HTTP_NOT_FOUND);
     }
 
