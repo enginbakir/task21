@@ -12,7 +12,9 @@ class TaskFactory extends Factory
             'title' => $this->faker->title,
             'description' => $this->faker->text,
             'status' => $this->faker->numberBetween(1,3),
-            'user_id' => UserFactory::new()->create(),
+            'user_id' => function() {
+                return factory('App\User')->create()->id;
+            },
         ];
     }
 }

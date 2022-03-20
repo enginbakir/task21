@@ -16,15 +16,13 @@ class TaskController
     public function getOne(Request $request, $id)
     {
         $task = Task::find($id);
-        var_dump($task);
-        exit;
         return new JsonResponse(["data" => $task], $task ? self::HTPP_OK : self::HTTP_NOT_FOUND);
     }
 
     public function getAll()
     {
-        echo "hello getAll";
-        exit;
+        $tasks = Task::all();
+        return new JsonResponse(["data" => $tasks], $tasks ? self::HTPP_OK : self::HTTP_NOT_FOUND);
     }
 
     public function create(Request $request): JsonResponse
