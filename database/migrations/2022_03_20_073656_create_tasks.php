@@ -13,7 +13,6 @@ class CreateTasks extends Migration
      */
     public function up()
     {
-
         Schema::create('tasks', function (Blueprint $table) {
             $table->id();
             $table->foreignId("user_id");
