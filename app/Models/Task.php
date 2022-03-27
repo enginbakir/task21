@@ -13,22 +13,16 @@ class Task extends Model
     const TODO = 2;
     const DONE = 3;
 
-    public $assignedUser;
-
     protected $fillable = ['title', 'description', 'status', 'user_id'];
 
     public function __construct(array $attributes = [])
     {
-        if (!empty($attributes['user_id'])) {
-            $user = User::find($attributes['user_id']);
-            $this->assignedUser = $user ?? null;
-        }
         parent::__construct($attributes);
     }
 
     public function assignedUser()
     {
-        return $this->belongsTo(User::class);
+        return $this->belongsTo(User::class,"user_id");
     }
 
     public function sortByStatus()
